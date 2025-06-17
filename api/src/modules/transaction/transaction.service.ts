@@ -1,4 +1,4 @@
-import { Inject, Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, Logger } from '@nestjs/common';
 import { ITransactionService } from './interfaces/transaction-service.interface';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTransactionDTO } from './dtos/create-transaction.dto';
@@ -15,6 +15,10 @@ export class TransactionService implements ITransactionService {
 
     public async createTransaction(data: CreateTransactionDTO, userId: string): Promise<TransactionDTO> {
         this.logger.log("Create Transaction");
+        if (!userId) {
+            throw new ForbiddenException('Unauthorized');
+        }
+
         const transaction = await this.prismaService.transaction.create({
             data: {
                 ...data,
@@ -29,10 +33,13 @@ export class TransactionService implements ITransactionService {
     }
 
     public async getTransactionById(transactionId: string, userId: string): Promise<TransactionDTO> {
+        if (!userId) {
+            throw new ForbiddenException('Unauthorized');
+        }
+
         const transaction = await this.prismaService.transaction.findFirst({
             where: {
                 id: transactionId,
-                userId,
             },
             include: {
                 category: true,
@@ -43,8 +50,12 @@ export class TransactionService implements ITransactionService {
     }
 
     public async getTransactions(payload: GetTransactionsQuery, userId: string): Promise<TransactionDTO[]> {
+        if (!userId) {
+            throw new ForbiddenException('Unauthorized');
+        }
+
         const transactions = await this.prismaService.transaction.findMany({
-            where: payload.categoryId || payload.type || payload.date ? { ...payload, userId } : { userId },
+            where: payload.type ? { type: payload.type, userId } : { userId },
             include: {
                 category: true,
             }
@@ -54,21 +65,34 @@ export class TransactionService implements ITransactionService {
     }
 
     public async updateTransaction(transactionId: string, payload: UpdateTransactionDTO, userId: string): Promise<TransactionDTO> {
+        if (!userId) {
+            throw new ForbiddenException('Unauthorized');
+        }
+
         const transactionUpdated = await this.prismaService.transaction.update({
             where: {
                 id: transactionId,
-                userId,
             },
-            data: payload,
+            data: {
+                ...payload
+            },
             include: {
                 category: true,
             }
         });
 
+        if (transactionUpdated.userId !== userId) {
+            throw new ForbiddenException('Unauthorized');
+          }
+
         return TransactionDTO.fromPrisma(transactionUpdated);
     }
 
     public async deleteTransaction(transactionId: string, userId: string): Promise<TransactionDTO> {
+        if (!userId) {
+            throw new ForbiddenException('Unauthorized');
+        }
+
         const transactionDeleted = await this.prismaService.transaction.delete({
             where: {
                 id: transactionId,
