@@ -35,7 +35,6 @@ export class TransactionDTO {
         dto.userId = data.userId;
         dto.date = data.date;
 
-        // dto.categoryId = data.category.id;
         if (data.category) {
             dto['category'] = data.category.name;
         }
