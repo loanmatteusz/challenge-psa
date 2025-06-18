@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/button';
 
 import { DataTable } from './data-table';
 import { useCategory } from './useCategory';
-import { CreateCategoryForm } from '../../_components/CreateCategoryForm';
+import { CreateCategoryForm } from '../../_components/create-category-form';
 import { columns } from './columns';
 
 

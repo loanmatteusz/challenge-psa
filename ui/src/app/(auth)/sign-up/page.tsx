@@ -8,7 +8,7 @@ import { useSignIn } from './useSignUp';
 
 // COMPONENTS
 import { Logo } from '@/components/logo';
-import { AppButton } from '@/components/AppButton';
+import { AppButton } from '@/components/app-button';
 import { Input } from '@/components/ui/input';
 
 const SignUpPage: NextPage = () => {

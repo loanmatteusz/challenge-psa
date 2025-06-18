@@ -9,7 +9,7 @@ export default function CategoryLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const { status, data } = useSession();
+    const { status } = useSession();
 
     if (status === 'loading') {
         return (

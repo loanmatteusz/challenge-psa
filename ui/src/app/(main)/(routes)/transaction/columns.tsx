@@ -18,8 +18,8 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { deleteTransaction } from "@/services/transaction";
-import { UpdateTransactionForm } from "../../_components/UpdateTransactionForm";
-import { Category } from "@/types/category";
+import { UpdateTransactionForm } from "../../_components/update-transaction-form";
+import { Category } from "@/interfaces/category.interface";
 
 export type Transaction = {
   id: string;

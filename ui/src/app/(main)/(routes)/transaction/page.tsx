@@ -15,7 +15,7 @@ import {
     DialogTrigger
 } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
-import { CreateTransactionForm } from '../../_components/CreateTransactionForm';
+import { CreateTransactionForm } from '../../_components/create-transaction-form';
 import { useState } from 'react';
 import { useCategory } from '../category/useCategory';
 

@@ -13,7 +13,7 @@ import {
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { CreateCategory } from "@/types/category"
+import { CreateCategory } from "@/interfaces/category.interface"
 import { createCategory } from "@/services/category"
 
 const formSchema = z.object({

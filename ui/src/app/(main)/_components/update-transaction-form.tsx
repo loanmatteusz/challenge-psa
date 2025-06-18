@@ -17,8 +17,8 @@ import { Textarea } from "@/components/ui/textarea"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { updateTransaction } from "@/services/transaction"
-import { UpdateTransaction, Transaction } from "@/types/transaction"
-import { Category } from "@/types/category"
+import { UpdateTransaction, Transaction } from "@/interfaces/transaction.interface"
+import { Category } from "@/interfaces/category.interface"
 
 const formSchema = z.object({
     id: z.string(),
@@ -71,9 +71,6 @@ export function UpdateTransactionForm({ transaction, onSuccess, categories }: Up
                             <FormControl>
                                 <Input type="number" placeholder="Type a value" {...field} />
                             </FormControl>
-                            {/* <FormDescription>
-                                    This is your public display name.
-                                </FormDescription> */}
                             <FormMessage />
                         </FormItem>
                     )}
@@ -101,9 +98,6 @@ export function UpdateTransactionForm({ transaction, onSuccess, categories }: Up
                                         </SelectContent>
                                     </Select>
                                 </FormControl>
-                                {/* <FormDescription>
-                                    This is your public display name.
-                                </FormDescription> */}
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -132,9 +126,6 @@ export function UpdateTransactionForm({ transaction, onSuccess, categories }: Up
                                         </SelectContent>
                                     </Select>
                                 </FormControl>
-                                {/* <FormDescription>
-                                    This is your public display name.
-                                </FormDescription> */}
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -150,9 +141,6 @@ export function UpdateTransactionForm({ transaction, onSuccess, categories }: Up
                             <FormControl>
                                 <Textarea placeholder="Type a description" {...field} />
                             </FormControl>
-                            {/* <FormDescription>
-                                This is your public display name.
-                            </FormDescription> */}
                             <FormMessage />
                         </FormItem>
                     )}

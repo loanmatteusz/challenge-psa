@@ -1,6 +1,6 @@
 "use client";
 
-import { AppSidebar } from "@/app/(main)/_components/AppSidebar";
+import { AppSidebar } from "@/app/(main)/_components/app-sidebar";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { Spinner } from "@/components/ui/spinner";
 import { useSession } from "next-auth/react";
@@ -11,8 +11,7 @@ export default function Layout({
 }: {
     children: React.ReactNode;
 }) {
-    const { status, data } = useSession();
-    console.log({ data });
+    const { status } = useSession();
 
     if (status === 'loading') {
         return (
