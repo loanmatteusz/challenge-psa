@@ -1,6 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { IsEnum } from 'class-validator';
-import { TransactionType } from '../enums/transaction-type.enum';
+import { TransactionType } from '../../shared/enums/transaction-type.enum';
 
 export class CreateTransactionDTO {
     @ApiProperty({ type: String, description: 'Category ID' })
