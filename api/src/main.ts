@@ -1,4 +1,5 @@
 import helmet from 'helmet';
+import fastifyCookie from '@fastify/cookie';
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { FastifyAdapter } from '@nestjs/platform-fastify';
@@ -13,6 +14,8 @@ async function bootstrap() {
     new FastifyAdapter()
   );
 
+  await app.register(fastifyCookie);
+
   app.use(helmet());
   app.setGlobalPrefix('api');
   app.useGlobalFilters(new AllExceptionsFilter());
@@ -23,7 +26,7 @@ async function bootstrap() {
   configureAndBuildSwagger(app);
 
   app.enableCors({
-    origin: 'http://localhost:3000',
+    origin: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     credentials: true,
   });

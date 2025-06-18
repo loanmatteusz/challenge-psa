@@ -1,5 +1,5 @@
 import { api } from '@/lib/axios';
-import { CreateTransaction, UpdateTransaction } from '@/types/transaction';
+import { CreateTransaction, UpdateTransaction } from '@/interfaces/transaction.interface';
 
 export async function createTransaction(data: CreateTransaction) {
     const response = await api.post('/transaction', {

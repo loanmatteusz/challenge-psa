@@ -1,5 +1,5 @@
 import { api } from '@/lib/axios';
-import { CreateCategory, UpdateCategory } from '@/types/category';
+import { CreateCategory, UpdateCategory } from '@/interfaces/category.interface';
 
 export async function createCategory(data: CreateCategory) {
     const response = await api.post('/category', {

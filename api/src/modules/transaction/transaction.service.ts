@@ -1,4 +1,4 @@
-import { ForbiddenException, Inject, Injectable, Logger } from '@nestjs/common';
+import { ForbiddenException, Inject, Injectable, Logger, NotFoundException } from '@nestjs/common';
 import { ITransactionService } from './interfaces/transaction-service.interface';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTransactionDTO } from './dtos/create-transaction.dto';
@@ -93,10 +93,20 @@ export class TransactionService implements ITransactionService {
             throw new ForbiddenException('Unauthorized');
         }
 
-        const transactionDeleted = await this.prismaService.transaction.delete({
+        const transaction = await this.prismaService.transaction.findFirst({
             where: {
                 id: transactionId,
                 userId,
+            }
+        });
+
+        if (!transaction) {
+            throw new NotFoundException("Not Found");
+        }
+
+        const transactionDeleted = await this.prismaService.transaction.delete({
+            where: {
+                id: transactionId,
             },
             include: {
                 category: true,

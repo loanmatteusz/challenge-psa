@@ -60,7 +60,6 @@ export class AuthService implements IAuthService {
 				id: true,
 				name: true,
 				email: true,
-				// role: true,
 				password: true,
 			},
 		});
@@ -79,7 +78,6 @@ export class AuthService implements IAuthService {
 				id: user.id,
 				name: user.name,
 				email: user.email,
-				// role: user.role,
 			} as IUserRequest,
 			{
 				secret: process.env.JWT_SECRET,

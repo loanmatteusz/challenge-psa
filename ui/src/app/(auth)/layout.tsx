@@ -1,28 +1,19 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 import { redirect } from 'next/navigation';
+
+// COMPONENTS
 import { Spinner } from '@/components/ui/spinner';
 
 export default function AuthLayout({
     children,
-}: {
+}: Readonly<{
     children: React.ReactNode;
-}) {
-    const [loading, setLoading] = useState(true);
-    const [isAuthenticated, setIsAuthenticated] = useState(false);
+}>) {
+    const { status } = useSession();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-
-        if (token) {
-            setIsAuthenticated(true);
-        }
-
-        setLoading(false);
-    }, []);
-
-    if (loading) {
+    if (status === 'loading') {
         return (
             <div className="flex items-center justify-center w-full h-screen">
                 <Spinner size="lg" />
@@ -30,12 +21,12 @@ export default function AuthLayout({
         );
     }
 
-    if (isAuthenticated) {
-        redirect('/transaction');
+    if (status === 'authenticated') {
+        return redirect('/transaction');
     }
 
     return (
-        <main className="flex items-center justify-center h-screen p-2 bg-indigo-900">
+        <main className="flex items-center justify-center h-screen p-2">
             {children}
         </main>
     );

@@ -19,7 +19,7 @@ import {
     SidebarSeparator
 } from "../../../components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { logoutUser } from "@/services/auth";
+import { signOut } from "next-auth/react";
 
 const items = [
     {
@@ -38,8 +38,8 @@ const AppSidebar = () => {
     const router = useRouter();
 
     function handleLogout() {
-        logoutUser()
-        router.push("/sign-in")
+        signOut();
+        router.push("/sign-in");
     }
     
     return (

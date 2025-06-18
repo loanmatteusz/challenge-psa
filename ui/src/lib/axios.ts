@@ -1,20 +1,17 @@
 // lib/axios.ts
 import axios from 'axios';
+import { getSession } from 'next-auth/react';
 
 export const api = axios.create({
   baseURL: process.env.API_URL || 'http://localhost:3001/api',
   withCredentials: true,
 });
 
-api.interceptors.request.use((config) => {
-  if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('token'); // ou outro nome usado
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+api.interceptors.request.use(async (config) => {
+    const session = await getSession();
+    console.log({ session });
+    if (session?.user) {
+        config.headers.Authorization = `Bearer ${session?.user.token}`;
     }
-  }
-
-  return config;
-}, (error) => {
-  return Promise.reject(error);
+    return config;
 });
