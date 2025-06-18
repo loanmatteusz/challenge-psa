@@ -1,15 +1,13 @@
-# Etapa de build
 FROM node:22.13.1-alpine AS builder
 
 WORKDIR /app
 
-COPY package*.json ./
-RUN yarn install
+COPY package.json package-lock.json ./
+RUN npm install
 
 COPY . .
-RUN yarn build
+RUN npm run build
 
-# Etapa de produção
 FROM node:22.13.1-alpine
 
 WORKDIR /app
@@ -21,4 +19,4 @@ COPY --from=builder /app/node_modules ./node_modules
 
 EXPOSE 3000
 
-CMD ["yarn", "start"]
+CMD ["npm", "run", "start"]

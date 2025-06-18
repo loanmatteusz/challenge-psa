@@ -27,7 +27,7 @@ export const authOptions: NextAuthOptions = {
                 },
                 password: { label: 'Password', type: 'password' },
             },
-            authorize: async (credentials, req) => {
+            authorize: async (credentials) => {
                 if (!credentials) {
                     throw new Error('Invalid data');
                 }
@@ -64,7 +64,9 @@ export const authOptions: NextAuthOptions = {
     ],
     callbacks: {
         jwt: async ({ token, user }) => {
-            user && (token.user = user);
+            if (user) {
+                token.user = user as IUser;
+            }
             return token;
         },
         session: async ({ session, token }) => {

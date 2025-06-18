@@ -6,8 +6,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - "3000:3000"
-    volumes:
-      - ./ui:/app:cached
+    environment:
+      - API_URL=http://api:8080/api
+      - NEXTAUTH_URL=http://localhost:3000
+      - NEXTAUTH_SECRET=eusouobatman
+    # volumes:
+    #   - ./ui:/app:cached
     depends_on:
       - backend
     networks:
@@ -18,7 +22,8 @@ services:
     build:
       context: ./api
       dockerfile: Dockerfile
-    env_file: ./api/.env
+    environment:
+      DATABASE_URL: "postgresql://postgres:docker@findev-db:5432/findev-db?schema=public"
     ports:
       - "8080:8080"
     volumes:

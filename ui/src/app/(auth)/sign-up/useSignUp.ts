@@ -47,7 +47,7 @@ const useSignIn = () => {
 
                 setTimeout(() => push('/sign-in'), 500);
             } catch (error: any) {
-                console.error({ error });
+                console.error({ message: error.message });
                 const errorMsg =
                     error.response?.data ||
                     error.message ||
@@ -60,7 +60,7 @@ const useSignIn = () => {
                 setIsLoading(false);
             }
         },
-        [],
+        [push],
     );
 
     return {

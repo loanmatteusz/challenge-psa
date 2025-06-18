@@ -2,15 +2,14 @@ FROM node:22.13.1-alpine as builder
 
 WORKDIR /app
 
-COPY package*.json ./
-COPY .docker ./.docker/
+COPY package.json package-lock.json ./
 
-RUN yarn install
+RUN npm install
 
 COPY . .
 
-RUN npx prisma generate && yarn build
-
+RUN npx prisma generate
+RUN npm run build
 
 FROM node:22.13.1-alpine
 
@@ -19,15 +18,14 @@ WORKDIR /app
 RUN apk add --no-cache bash
 
 COPY --from=builder /app/package.json ./
-COPY --from=builder /app/yarn.lock ./
-COPY --from=builder /app/.docker ./.docker
-COPY --from=builder /app/prisma ./
-
-RUN yarn global add @nestjs/cli
-RUN yarn cache clean && yarn install --prod && chmod +x .docker/entrypoint.sh
-
+COPY --from=builder /app/package-lock.json ./
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/prisma ./prisma
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/.docker ./.docker
+
+RUN chmod +x .docker/entrypoint.sh
 
 EXPOSE 8080
 
-ENTRYPOINT [ ".docker/entrypoint.sh" ]
+ENTRYPOINT [".docker/entrypoint.sh"]

@@ -1,4 +1,4 @@
-import NextAuth, { DefaultSession } from 'next-auth';
+import { DefaultSession } from 'next-auth';
 
 // INTERFACES
 import { IRequestUser } from '@/interfaces/request-user.interface';
