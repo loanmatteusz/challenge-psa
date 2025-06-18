@@ -1,6 +1,8 @@
 'use client';
 
+import { useState } from 'react';
 import { NextPage } from 'next';
+import { useCategory } from '../category/useCategory';
 
 // COMPONENTS
 import { useTransaction } from './useTransaction';
@@ -16,8 +18,6 @@ import {
 } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinner';
 import { CreateTransactionForm } from '../../_components/create-transaction-form';
-import { useState } from 'react';
-import { useCategory } from '../category/useCategory';
 
 
 const TransactionPage: NextPage = () => {

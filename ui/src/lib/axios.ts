@@ -1,4 +1,3 @@
-// lib/axios.ts
 import axios from 'axios';
 import { getSession } from 'next-auth/react';
 
@@ -9,7 +8,6 @@ export const api = axios.create({
 
 api.interceptors.request.use(async (config) => {
     const session = await getSession();
-    console.log({ session });
     if (session?.user) {
         config.headers.Authorization = `Bearer ${session?.user.token}`;
     }

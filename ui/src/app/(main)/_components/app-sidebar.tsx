@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
-import { ChartBarStacked, ChartSpline, LogOut, Settings } from "lucide-react";
+import { ChartBarStacked, ChartSpline, LogOut } from "lucide-react";
 import {
     Sidebar,
     SidebarContent,
@@ -19,7 +19,7 @@ import {
     SidebarSeparator
 } from "../../../components/ui/sidebar";
 import { Button } from "@/components/ui/button";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 const items = [
     {
@@ -37,6 +37,8 @@ const items = [
 const AppSidebar = () => {
     const router = useRouter();
 
+    const session = useSession();
+
     function handleLogout() {
         signOut();
         router.push("/sign-in");
@@ -53,7 +55,7 @@ const AppSidebar = () => {
                             >
                                 <div className="flex items-baseline gap-2">
                                     <Image src="/logo.png" alt="logo" width={20} height={20} />
-                                    <span>Loan Matteus</span>
+                                    <span>{session?.data?.user.name}</span>
                                 </div>
                                 <LogOut />
                             </Button>

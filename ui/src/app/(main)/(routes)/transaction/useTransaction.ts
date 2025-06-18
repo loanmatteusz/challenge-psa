@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
-import { listTransactions } from '@/services/transaction';
+import { listTransactions } from '@/services/transaction.service';
 
 export function useTransaction() {
     const {

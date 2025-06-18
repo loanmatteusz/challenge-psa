@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Category, UpdateCategory } from "@/interfaces/category.interface"
-import { updateCategory } from "@/services/category"
+import { updateCategory } from "@/services/category.service"
 
 const formSchema = z.object({
     id: z.string(),

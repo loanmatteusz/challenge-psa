@@ -17,7 +17,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { deleteTransaction } from "@/services/transaction";
+import { deleteTransaction } from "@/services/transaction.service";
 import { UpdateTransactionForm } from "../../_components/update-transaction-form";
 import { Category } from "@/interfaces/category.interface";
 
@@ -143,7 +143,6 @@ export const columns = (categories: Category[], refetch: () => void): ColumnDef<
     header: () => <div className="text-right">Amount</div>,
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"))
-      // Format the amount as a dollar amount
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
         currency: "USD",
