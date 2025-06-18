@@ -1,14 +1,17 @@
 import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
-import { JwtGuard } from '../auth/guards/jwt.guard';
-import { CategoryProvidersEnum } from './enums/category-providers.enum';
-import { ICategoryService } from './interfaces/category-service.interface';
-import { CategoryDTO } from './dtos/category.dto';
-import { CurrentUser } from '../auth/decorators/user.decorator';
-import { IUserRequest } from '../auth/interfaces/user-request.interface';
-import { CreateCategoryDTO } from './dtos/create-category.dto';
-import { GetCategoriesQueryDTO } from './dtos/get-categories-query.dto';
-import { UpdateCategoryDTO } from './dtos/update-category.dto';
+
+import { JwtGuard } from '../../../auth/guards/jwt.guard';
+import { CurrentUser } from '../../../auth/decorators/user.decorator';
+import { IUserRequest } from '../../../auth/interfaces/user-request.interface';
+
+import { ICategoryService } from '../../domain/services/category-service.interface';
+import { CategoryProvidersEnum } from '../../shared/enums/category-providers.enum';
+
+import { Category } from '../../domain/entities/category.entity';
+import { CreateCategoryDTO } from '../dtos/create-category.dto';
+import { GetCategoriesQueryDTO } from '../dtos/get-categories-query.dto';
+import { UpdateCategoryDTO } from '../dtos/update-category.dto';
 
 @ApiTags('[CATEGORY]')
 @ApiBearerAuth()
@@ -19,7 +22,7 @@ export class CategoryController {
     private readonly categoryService: ICategoryService;
 
     @ApiOkResponse({
-        type: CategoryDTO,
+        type: Category,
         description: 'Category created successfully',
     })
     @Post()
@@ -28,7 +31,7 @@ export class CategoryController {
     }
 
     @ApiOkResponse({
-        type: CategoryDTO,
+        type: Category,
         description: 'Category fetched successfully',
     })
     @Get()
@@ -37,7 +40,7 @@ export class CategoryController {
     }
 
     @ApiOkResponse({
-        type: CategoryDTO,
+        type: Category,
         description: 'Category fetched successfully',
     })
     @Get(":id")
@@ -46,7 +49,7 @@ export class CategoryController {
     }
 
     @ApiOkResponse({
-        type: CategoryDTO,
+        type: Category,
         description: 'Category updated successfully',
     })
     @Put(":id")
@@ -59,7 +62,7 @@ export class CategoryController {
     }
 
     @ApiOkResponse({
-        type: CategoryDTO,
+        type: Category,
         description: 'Category deleted successfully',
     })
     @Delete(":id")
