@@ -12,18 +12,20 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter()
   );
-  
+
   app.use(helmet());
-	app.setGlobalPrefix('api');
-	app.useGlobalFilters(new AllExceptionsFilter());
-	app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  app.setGlobalPrefix('api');
+  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-	app.enableShutdownHooks();
+  app.enableShutdownHooks();
 
-	configureAndBuildSwagger(app);
+  configureAndBuildSwagger(app);
 
   app.enableCors({
-    origin: '*',
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    credentials: true,
   });
 
   await app.listen(process.env.PORT ?? 3001, '0.0.0.0');
