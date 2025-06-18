@@ -7,7 +7,7 @@ import { CategoryDTO } from './dtos/category.dto';
 import { CurrentUser } from '../auth/decorators/user.decorator';
 import { IUserRequest } from '../auth/interfaces/user-request.interface';
 import { CreateCategoryDTO } from './dtos/create-category.dto';
-import { GetCategoriesQuery } from './dtos/get-categories-query.dto';
+import { GetCategoriesQueryDTO } from './dtos/get-categories-query.dto';
 import { UpdateCategoryDTO } from './dtos/update-category.dto';
 
 @ApiTags('[CATEGORY]')
@@ -32,7 +32,7 @@ export class CategoryController {
         description: 'Category fetched successfully',
     })
     @Get()
-    public async getCategories(@CurrentUser() { id }: IUserRequest, @Query() query: GetCategoriesQuery) {
+    public async getCategories(@CurrentUser() { id }: IUserRequest, @Query() query: GetCategoriesQueryDTO) {
         return await this.categoryService.getCategories(query, id);
     }
 

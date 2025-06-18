@@ -14,7 +14,7 @@ import { IUserService } from './interfaces/user-service.interface';
 
 // DTOs
 import { UserDTO } from './dtos/user.dto';
-import { GetUsersQuery } from './dtos/get-users-query.dto';
+import { GetUsersQueryDTO } from './dtos/get-users-query.dto';
 import { UpdateUserDTO } from './dtos/update-user.dto';
 
 @Injectable()
@@ -42,7 +42,7 @@ export class UserService implements IUserService {
 		return user;
 	}
 
-	public async getUsers(payload: GetUsersQuery): Promise<UserDTO[]> {
+	public async getUsers(payload: GetUsersQueryDTO): Promise<UserDTO[]> {
 		this.logger.log('Get Users');
 
 		const fields = ['name', 'email'];

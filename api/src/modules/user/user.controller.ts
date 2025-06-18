@@ -30,7 +30,7 @@ import { IUserService } from './interfaces/user-service.interface';
 import { IUserRequest } from '../auth/interfaces/user-request.interface';
 
 // DTOs
-import { GetUsersQuery } from './dtos/get-users-query.dto';
+import { GetUsersQueryDTO } from './dtos/get-users-query.dto';
 import { UpdateUserDTO } from './dtos/update-user.dto';
 import { UserDTO } from './dtos/user.dto';
 
@@ -56,7 +56,7 @@ export class UserController {
 		description: 'Users fetched successfully',
 	})
 	@Get()
-	public async getUsers(@Query() query: GetUsersQuery) {
+	public async getUsers(@Query() query: GetUsersQueryDTO) {
 		return this.userService.getUsers(query);
 	}
 

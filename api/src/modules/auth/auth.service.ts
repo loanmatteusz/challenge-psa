@@ -63,6 +63,7 @@ export class AuthService implements IAuthService {
 				password: true,
 			},
 		});
+
 		if (!user) {
 			this.logger.error(`User not found`);
 			throw new BadRequestException('Invalid Credentials');

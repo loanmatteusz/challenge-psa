@@ -7,7 +7,7 @@ import { CurrentUser } from '../auth/decorators/user.decorator';
 import { IUserRequest } from '../auth/interfaces/user-request.interface';
 import { CreateTransactionDTO } from './dtos/create-transaction.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
-import { GetTransactionsQuery } from './dtos/get-transactions-query.dto';
+import { GetTransactionsQueryDTO } from './dtos/get-transactions-query.dto';
 import { UpdateTransactionDTO } from './dtos/update-transaction.dto';
 
 @ApiTags('[TRANSACTION]')
@@ -32,7 +32,7 @@ export class TransactionController {
         description: 'Transactions fetched successfully',
     })
     @Get()
-    public async getTransactions(@CurrentUser() { id }: IUserRequest, @Query() query: GetTransactionsQuery) {
+    public async getTransactions(@CurrentUser() { id }: IUserRequest, @Query() query: GetTransactionsQueryDTO) {
         return await this.transactionService.getTransactions(query, id);
     }
 

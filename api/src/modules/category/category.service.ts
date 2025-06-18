@@ -3,7 +3,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { ICategoryService } from './interfaces/category-service.interface';
 import { CategoryDTO } from './dtos/category.dto';
 import { CreateCategoryDTO } from './dtos/create-category.dto';
-import { GetCategoriesQuery } from './dtos/get-categories-query.dto';
+import { GetCategoriesQueryDTO } from './dtos/get-categories-query.dto';
 import { UpdateCategoryDTO } from './dtos/update-category.dto';
 
 @Injectable()
@@ -37,7 +37,7 @@ export class CategoryService implements ICategoryService {
         return category;
     }
 
-    public async getCategories(payload: GetCategoriesQuery, userId: string): Promise<CategoryDTO[]> {
+    public async getCategories(payload: GetCategoriesQueryDTO, userId: string): Promise<CategoryDTO[]> {
         const categories = await this.prismaService.category.findMany({
             where: payload.name ? { name: payload.name, userId } : { userId },
         });

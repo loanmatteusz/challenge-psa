@@ -3,7 +3,7 @@ import { ITransactionService } from './interfaces/transaction-service.interface'
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateTransactionDTO } from './dtos/create-transaction.dto';
 import { TransactionDTO } from './dtos/transaction.dto';
-import { GetTransactionsQuery } from './dtos/get-transactions-query.dto';
+import { GetTransactionsQueryDTO } from './dtos/get-transactions-query.dto';
 import { UpdateTransactionDTO } from './dtos/update-transaction.dto';
 
 @Injectable()
@@ -49,7 +49,7 @@ export class TransactionService implements ITransactionService {
         return TransactionDTO.fromPrisma(transaction);
     }
 
-    public async getTransactions(payload: GetTransactionsQuery, userId: string): Promise<TransactionDTO[]> {
+    public async getTransactions(payload: GetTransactionsQueryDTO, userId: string): Promise<TransactionDTO[]> {
         if (!userId) {
             throw new ForbiddenException('Unauthorized');
         }
