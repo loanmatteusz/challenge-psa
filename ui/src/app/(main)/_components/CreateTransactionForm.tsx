@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { createTransaction } from "@/services/transaction"
 import { CreateTransaction } from "@/types/transaction"
+import { Category } from "@/types/category"
 
 const formSchema = z.object({
     amount: z.string(),
@@ -29,9 +30,10 @@ const formSchema = z.object({
 type CreateTransactionFormProps = {
     refetch: () => void;
     onSuccess: () => void;
+    categories: Category[];
 }
 
-export function CreateTransactionForm({ refetch, onSuccess }: CreateTransactionFormProps) {
+export function CreateTransactionForm({ refetch, onSuccess, categories }: CreateTransactionFormProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -68,9 +70,6 @@ export function CreateTransactionForm({ refetch, onSuccess }: CreateTransactionF
                             <FormControl>
                                 <Input type="number" placeholder="Type a value" {...field} />
                             </FormControl>
-                            {/* <FormDescription>
-                                    This is your public display name.
-                                </FormDescription> */}
                             <FormMessage />
                         </FormItem>
                     )}
@@ -98,9 +97,6 @@ export function CreateTransactionForm({ refetch, onSuccess }: CreateTransactionF
                                         </SelectContent>
                                     </Select>
                                 </FormControl>
-                                {/* <FormDescription>
-                                    This is your public display name.
-                                </FormDescription> */}
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -121,22 +117,14 @@ export function CreateTransactionForm({ refetch, onSuccess }: CreateTransactionF
                                             <SelectValue placeholder="Select a type" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="8f542856-5cc2-456f-a3fb-0b0469814064">
-                                                <Badge variant="secondary">
-                                                    Dinner
-                                                </Badge>
-                                            </SelectItem>
-                                            <SelectItem value="breakfast">
-                                                <Badge variant="destructive">
-                                                    Breakfast
-                                                </Badge>
-                                            </SelectItem>
+                                            {categories.map((category) => (
+                                                <SelectItem key={category.id} value={category.id}>
+                                                    <Badge variant="secondary">{category.name}</Badge>
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                 </FormControl>
-                                {/* <FormDescription>
-                                    This is your public display name.
-                                </FormDescription> */}
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -152,9 +140,6 @@ export function CreateTransactionForm({ refetch, onSuccess }: CreateTransactionF
                             <FormControl>
                                 <Textarea placeholder="Type a description" {...field} />
                             </FormControl>
-                            {/* <FormDescription>
-                                This is your public display name.
-                            </FormDescription> */}
                             <FormMessage />
                         </FormItem>
                     )}

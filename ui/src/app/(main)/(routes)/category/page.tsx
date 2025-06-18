@@ -1,29 +1,62 @@
 'use client';
 
 import { NextPage } from 'next';
+import { useState } from 'react';
 
 // COMPONENTS
-// import { useTransaction } from './useTransaction';
-// import { columns } from './columns';
-// import { DataTable } from './data-table';
+import { Spinner } from '@/components/ui/spinner';
+import {
+    Dialog,
+    DialogContent,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 
+import { DataTable } from './data-table';
+import { useCategory } from './useCategory';
+import { CreateCategoryForm } from '../../_components/CreateCategoryForm';
+import { columns } from './columns';
 
-const CategoryPage: NextPage = () => {
+
+const TransactionPage: NextPage = () => {
+    const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+    const { categories, isLoading, error, refetch } = useCategory();
+    
+    if (isLoading) return (
+        <div className="flex flex-col items-center justify-between">
+            <Spinner />
+        </div>
+    );
+    
+    if (error) return <p>Erro ao carregar categorias</p>;
 
     return (
         <>
-            <div className="h-full flex flex-col items-center">
+            <div className="flex flex-col items-center">
                 <div className="flex items-baseline gap-2">
                     <h1 className="">Categories</h1>
-                    <Button variant="secondary">Add</Button>
+
+                    <Dialog open={isCreateDialogOpen} onOpenChange={setIsCreateDialogOpen}>
+                        <Button variant="outline" asChild>
+                            <DialogTrigger>New</DialogTrigger>
+                        </Button>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>Create Category</DialogTitle>
+                            </DialogHeader>
+                            <CreateCategoryForm refetch={refetch} onSuccess={() => setIsCreateDialogOpen(false)} />
+                        </DialogContent>
+                    </Dialog>
+
                 </div>
                 <div className="container mx-auto py-10">
-                    {/* <DataTable columns={columns} data={transactions} /> */}
+                    <DataTable columns={columns(refetch)} data={categories} />
                 </div>
             </div>
         </>
     );
 };
 
-export default CategoryPage;
+export default TransactionPage;

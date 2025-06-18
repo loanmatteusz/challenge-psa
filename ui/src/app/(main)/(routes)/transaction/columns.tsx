@@ -1,6 +1,8 @@
 "use client"
-
+import { useState } from "react";
 import { format } from "date-fns";
+
+import { toast } from "sonner";
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -15,10 +17,9 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { deleteTransaction, listTransactions } from "@/services/transaction";
+import { deleteTransaction } from "@/services/transaction";
 import { UpdateTransactionForm } from "../../_components/UpdateTransactionForm";
-import { useState } from "react";
-import { toast } from "sonner";
+import { Category } from "@/types/category";
 
 export type Transaction = {
   id: string;
@@ -34,13 +35,12 @@ export type Transaction = {
 async function deleteRow(id: string) {
   try {
     await deleteTransaction(id);
-
   } catch (err: any) {
     console.error({ err });
   }
 }
 
-export const columns = (refetch: () => void): ColumnDef<Transaction>[] => [
+export const columns = (categories: Category[], refetch: () => void): ColumnDef<Transaction>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -110,7 +110,7 @@ export const columns = (refetch: () => void): ColumnDef<Transaction>[] => [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">
+    cell: ({ row }) => <div>
       <Badge>{row.getValue("category")}</Badge>
     </div>,
   },
@@ -157,6 +157,7 @@ export const columns = (refetch: () => void): ColumnDef<Transaction>[] => [
     cell: ({ row }) => {
       const transaction = row.original;
       const [open, setOpen] = useState(false);
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -187,7 +188,7 @@ export const columns = (refetch: () => void): ColumnDef<Transaction>[] => [
                         Update Transaction
                       </DialogTitle>
                     </DialogHeader>
-                    <UpdateTransactionForm transaction={transaction} onSuccess={() => {
+                    <UpdateTransactionForm categories={categories} transaction={transaction} onSuccess={() => {
                       setOpen(false);
                       refetch();
                       toast.success("Transaction updated successfully");
@@ -217,10 +218,12 @@ export const columns = (refetch: () => void): ColumnDef<Transaction>[] => [
                             setOpen(false);
                             refetch();
                             toast.success("Transaction deleted successfully");
-                          }, 500);
+                          }, 200);
                         }}
-                      >Delete</Button>
-                      <Button variant="ghost">Cancel</Button>
+                      >
+                        Delete
+                      </Button>
+                      <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
                     </div>
                   </DialogContent>
                 </Dialog>

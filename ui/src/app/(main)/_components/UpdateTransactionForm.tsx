@@ -18,6 +18,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { updateTransaction } from "@/services/transaction"
 import { UpdateTransaction, Transaction } from "@/types/transaction"
+import { Category } from "@/types/category"
 
 const formSchema = z.object({
     id: z.string(),
@@ -30,9 +31,10 @@ const formSchema = z.object({
 type UpdateTransactionFormProps = {
     transaction: Transaction;
     onSuccess: () => void;
+    categories: Category[];
 }
 
-export function UpdateTransactionForm({ transaction, onSuccess }: UpdateTransactionFormProps) {
+export function UpdateTransactionForm({ transaction, onSuccess, categories }: UpdateTransactionFormProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -122,16 +124,11 @@ export function UpdateTransactionForm({ transaction, onSuccess }: UpdateTransact
                                             <SelectValue placeholder="Select a type" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            <SelectItem value="8f542856-5cc2-456f-a3fb-0b0469814064">
-                                                <Badge variant="secondary">
-                                                    Dinner
-                                                </Badge>
-                                            </SelectItem>
-                                            <SelectItem value="breakfast">
-                                                <Badge variant="destructive">
-                                                    Breakfast
-                                                </Badge>
-                                            </SelectItem>
+                                            {categories.map((category) => (
+                                                <SelectItem key={category.id} value={category.id}>
+                                                    <Badge variant="secondary">{category.name}</Badge>
+                                                </SelectItem>
+                                            ))}
                                         </SelectContent>
                                     </Select>
                                 </FormControl>

@@ -12,8 +12,6 @@ export function useTransaction() {
         queryFn: listTransactions,
     });
 
-    console.log({ transactions });
-
     return {
         transactions,
         isLoading,

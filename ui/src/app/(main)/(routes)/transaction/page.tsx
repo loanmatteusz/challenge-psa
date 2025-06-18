@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import {
     Dialog,
     DialogContent,
-    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger
@@ -18,11 +17,14 @@ import {
 import { Spinner } from '@/components/ui/spinner';
 import { CreateTransactionForm } from '../../_components/CreateTransactionForm';
 import { useState } from 'react';
+import { useCategory } from '../category/useCategory';
 
 
 const TransactionPage: NextPage = () => {
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+    
     const { transactions, isLoading, error, refetch } = useTransaction();
+    const { categories } = useCategory();
     
     if (isLoading) return (
         <div className="flex flex-col items-center justify-between">
@@ -46,13 +48,13 @@ const TransactionPage: NextPage = () => {
                             <DialogHeader>
                                 <DialogTitle>Create Transaction</DialogTitle>
                             </DialogHeader>
-                            <CreateTransactionForm refetch={refetch} onSuccess={() => setIsCreateDialogOpen(false)} />
+                            <CreateTransactionForm categories={categories} refetch={refetch} onSuccess={() => setIsCreateDialogOpen(false)} />
                         </DialogContent>
                     </Dialog>
 
                 </div>
                 <div className="container mx-auto py-10">
-                    <DataTable columns={columns(refetch)} data={transactions} />
+                    <DataTable columns={columns(categories, refetch)} data={transactions} />
                 </div>
             </div>
         </>

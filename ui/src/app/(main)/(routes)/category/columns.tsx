@@ -1,4 +1,5 @@
 "use client"
+import { useState } from "react";
 
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,19 +14,26 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Badge } from "@/components/ui/badge";
+import { deleteCategory } from "@/services/category";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { toast } from "sonner";
+import { UpdateCategoryForm } from "../../_components/UpdateCategoryForm";
 
-export type Transaction = {
+export type Category = {
   id: string;
   userId: string;
-  categoryId: string;
-  type: "income" | "expense";
-  amount: number;
-  description?: string;
-  date: Date;
-  category: string; // Name
+  name: string;
 }
 
-export const columns: ColumnDef<Transaction>[] = [
+async function deleteRow(id: string) {
+  try {
+    await deleteCategory(id);
+  } catch (err: any) {
+    console.error({ err });
+  }
+}
+
+export const columns = (refetch: () => void): ColumnDef<Category>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -49,70 +57,29 @@ export const columns: ColumnDef<Transaction>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "description",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Description
+          Category Name
           <ArrowUpDown />
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("description")}</div>,
-  },
-  {
-    accessorKey: "type",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Type
-          <ArrowUpDown />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("type")}</div>,
-  },
-  {
-    accessorKey: "category",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-        >
-          Category
-          <ArrowUpDown />
-        </Button>
-      )
-    },
-    cell: ({ row }) => <div className="lowercase">
-      <Badge>{row.getValue("category")}</Badge>
+    cell: ({ row }) => <div>
+      <Badge>{row.getValue("name")}</Badge>
     </div>,
-  },
-  {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
-    cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"))
-      // Format the amount as a dollar amount
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "USD",
-      }).format(amount)
-      return <div className="text-right font-medium">{formatted}</div>
-    },
   },
   {
     id: "actions",
     enableHiding: false,
     cell: ({ row }) => {
-      const payment = row.original
+      const category = row.original;
+      const [open, setOpen] = useState(false);
+
       return (
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -124,13 +91,69 @@ export const columns: ColumnDef<Transaction>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(payment.id)}
+              onClick={() => navigator.clipboard.writeText(category.id)}
             >
-              Copy Transaction ID
+              Copy Category ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Update Transaction</DropdownMenuItem>
-            <DropdownMenuItem>Delete Transaction</DropdownMenuItem>
+
+            <div className="flex flex-col">
+              <DropdownMenuItem asChild>
+                <Dialog>
+                  <Button variant="ghost" asChild>
+                    <DialogTrigger>
+                      Update Category
+                    </DialogTrigger>
+                  </Button>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>
+                        Update Category
+                      </DialogTitle>
+                    </DialogHeader>
+                    <UpdateCategoryForm category={category} onSuccess={() => {
+                      setOpen(false);
+                      refetch();
+                      toast.success("Category updated successfully");
+                    }} />
+                  </DialogContent>
+                </Dialog>
+              </DropdownMenuItem>
+
+              <DropdownMenuItem asChild>
+                <Dialog open={open} onOpenChange={setOpen}>
+                  <Button variant="ghost" onClick={() => setOpen(true)} asChild>
+                    <DialogTrigger>
+                      Delete Category
+                    </DialogTrigger>
+                  </Button>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>Delete Category</DialogTitle>
+                      <DialogDescription>
+                        Are you sure to delete this Category?
+                      </DialogDescription>
+                    </DialogHeader>
+                    <div className="flex items-baseline gap-2">
+                      <Button variant="destructive"
+                        onClick={async () => {
+                          await deleteRow(category.id);
+                          setTimeout(() => {
+                            setOpen(false);
+                            refetch();
+                            toast.success("Category deleted successfully");
+                          }, 200);
+                        }}
+                      >
+                        Delete
+                      </Button>
+                      <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </DropdownMenuItem>
+            </div>
+
           </DropdownMenuContent>
         </DropdownMenu>
       )
