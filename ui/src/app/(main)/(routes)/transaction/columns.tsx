@@ -20,6 +20,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { deleteTransaction } from "@/services/transaction.service";
 import { UpdateTransactionForm } from "../../_components/update-transaction-form";
 import { Category } from "@/interfaces/category.interface";
+import { TransactionActionsCell } from "../../_components/transaction-actions-cell";
 
 export type Transaction = {
   id: string;
@@ -153,90 +154,13 @@ export const columns = (categories: Category[], refetch: () => void): ColumnDef<
   {
     id: "actions",
     enableHiding: false,
-    cell: ({ row }) => {
-      const transaction = row.original;
-      const [open, setOpen] = useState(false);
-      const [updateOpen, setUpdateOpen] = useState(false);
-
-      return (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="h-8 w-8 p-0">
-              <span className="sr-only">Open menu</span>
-              <MoreHorizontal />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-            <DropdownMenuItem
-              onClick={() => navigator.clipboard.writeText(transaction.id)}
-            >
-              Copy Transaction ID
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <div className="flex flex-col">
-              <DropdownMenuItem asChild>
-                <Dialog open={updateOpen} onOpenChange={setUpdateOpen}>
-                  <Button variant="ghost" asChild>
-                    <DialogTrigger>
-                      Update Transaction
-                    </DialogTrigger>
-                  </Button>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>
-                        Update Transaction
-                      </DialogTitle>
-                    </DialogHeader>
-                    <UpdateTransactionForm categories={categories} transaction={transaction}
-                      onSuccess={() => {
-                        setUpdateOpen(false);
-                        refetch();
-                        toast.success("Transaction updated successfully");
-                      }}
-                      close={() => {
-                        setUpdateOpen(false);
-                      }}
-                    />
-                  </DialogContent>
-                </Dialog>
-              </DropdownMenuItem>
-              <DropdownMenuItem asChild>
-                <Dialog open={open} onOpenChange={setOpen}>
-                  <Button variant="ghost" onClick={() => setOpen(true)} asChild>
-                    <DialogTrigger>
-                      Delete Transaction
-                    </DialogTrigger>
-                  </Button>
-                  <DialogContent>
-                    <DialogHeader>
-                      <DialogTitle>Delete Transaction</DialogTitle>
-                      <DialogDescription>
-                        Are you sure to delete this Transaction?
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="flex items-baseline gap-2">
-                      <Button variant="destructive"
-                        onClick={async () => {
-                          await deleteRow(transaction.id);
-                          setTimeout(() => {
-                            setOpen(false);
-                            refetch();
-                            toast.success("Transaction deleted successfully");
-                          }, 200);
-                        }}
-                      >
-                        Delete
-                      </Button>
-                      <Button variant="ghost" onClick={() => setOpen(false)}>Cancel</Button>
-                    </div>
-                  </DialogContent>
-                </Dialog>
-              </DropdownMenuItem>
-            </div>
-          </DropdownMenuContent>
-        </DropdownMenu>
-      )
-    },
+    cell: ({ row }) => (
+      <TransactionActionsCell
+        transaction={row.original}
+        categories={categories}
+        refetch={refetch}
+        deleteRow={deleteRow}
+      />
+    )
   },
 ];
