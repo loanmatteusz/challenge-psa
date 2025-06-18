@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import { ChartBarStacked, ChartSpline, LogOut, Settings } from "lucide-react";
 import {
     Sidebar,
@@ -14,6 +18,8 @@ import {
     SidebarMenuItem,
     SidebarSeparator
 } from "../../../components/ui/sidebar";
+import { Button } from "@/components/ui/button";
+import { logoutUser } from "@/services/auth";
 
 const items = [
     {
@@ -29,19 +35,28 @@ const items = [
 ];
 
 const AppSidebar = () => {
+    const router = useRouter();
+
+    function handleLogout() {
+        logoutUser()
+        router.push("/sign-in")
+    }
+    
     return (
         <Sidebar collapsible="icon">
             <SidebarHeader className="py-4">
                 <SidebarMenu>
                     <SidebarMenuItem className="flex items-center justify-between">
                         <SidebarMenuButton className="flex justify-between" asChild>
-                            <Link href="/">
+                            <Button className="bg-neutral-500"
+                                onClick={handleLogout}
+                            >
                                 <div className="flex items-baseline gap-2">
                                     <Image src="/logo.png" alt="logo" width={20} height={20} />
                                     <span>Loan Matteus</span>
                                 </div>
                                 <LogOut />
-                            </Link>
+                            </Button>
                         </SidebarMenuButton>
                     </SidebarMenuItem>
                 </SidebarMenu>

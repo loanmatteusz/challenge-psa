@@ -35,7 +35,7 @@ export default function AuthLayout({
     }
 
     return (
-        <main className="flex items-center justify-center h-screen p-2 bg-stone-500">
+        <main className="flex items-center justify-center h-screen p-2 bg-indigo-900">
             {children}
         </main>
     );

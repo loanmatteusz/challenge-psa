@@ -13,7 +13,7 @@ const HomePage: NextPage = () => {
 
                 <h2 className="text-2xl">
                     This is the{' '}
-                    <b className="underline text-blue-700">Professionals SA</b>.
+                    <b className="underline text-blue-700">Profissionais SA</b>.
                 </h2>
             </div>
         </>

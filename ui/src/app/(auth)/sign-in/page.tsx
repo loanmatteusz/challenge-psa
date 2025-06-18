@@ -16,7 +16,7 @@ const SignInPage: NextPage = () => {
         useSignIn();
 
     return (
-        <div className="flex flex-col border-2 max-w-[480px] max-h-[720px] p-2 w-full rounded-md shadow-md items-center justify-center">
+        <div className="flex flex-col border-2 max-w-[480px] max-h-[720px] p-4 w-full rounded-md shadow-md items-center justify-center bg-transparent">
             <div className="w-36 h-[32px] items-center justify-center">
                 <Logo />
             </div>
