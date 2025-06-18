@@ -18,7 +18,7 @@ export class TransactionService implements ITransactionService {
     private readonly transactionRepository: TransactionRepository;
 
     public async createTransaction(data: CreateTransactionDTO, userId: string): Promise<Transaction> {
-        this.logger.log("Create Transaction");
+        this.logger.log("Creating a Transaction");
         if (!userId) {
             throw new ForbiddenException('Unauthorized Error');
         }
@@ -26,6 +26,7 @@ export class TransactionService implements ITransactionService {
     }
 
     public async getTransactionById(transactionId: string, userId: string): Promise<Transaction> {
+        this.logger.log("Getting a Transaction by Id");
         if (!userId) {
             throw new ForbiddenException('Unauthorized Error');
         }
@@ -33,6 +34,7 @@ export class TransactionService implements ITransactionService {
     }
 
     public async getTransactions(payload: GetTransactionsQueryDTO, userId: string): Promise<Transaction[]> {
+        this.logger.log("Creating Transactions filtered");
         if (!userId) {
             throw new ForbiddenException('Unauthorized Error');
         }
@@ -40,6 +42,7 @@ export class TransactionService implements ITransactionService {
     }
 
     public async updateTransaction(transactionId: string, payload: UpdateTransactionDTO, userId: string): Promise<Transaction> {
+        this.logger.log("Updating a Transaction");
         if (!userId) {
             throw new ForbiddenException('Unauthorized Error');
         }
@@ -51,6 +54,7 @@ export class TransactionService implements ITransactionService {
     }
 
     public async deleteTransaction(transactionId: string, userId: string): Promise<Transaction> {
+        this.logger.log("Deleting a Transaction");
         if (!userId) {
             throw new ForbiddenException('Unauthorized Error');
         }
