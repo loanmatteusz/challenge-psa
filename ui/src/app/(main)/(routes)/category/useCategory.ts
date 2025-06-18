@@ -12,8 +12,6 @@ export function useCategory() {
         queryFn: listCategories,
     });
 
-    console.log({ categories });
-
     return {
         categories,
         isLoading,

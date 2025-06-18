@@ -16,7 +16,6 @@ export async function listTransactions() {
 
 export async function updateTransaction(data: UpdateTransaction) {
     const { id, categoryId, amount, type, description } = data;
-    console.log({ id });
     const response = await api.put(`/transaction/${id}`, {
         categoryId,
         amount,
@@ -27,7 +26,6 @@ export async function updateTransaction(data: UpdateTransaction) {
 }
 
 export async function deleteTransaction(id: string) {
-    console.log({ id });
     const response = await api.delete(`/transaction/${id}`);
     return response;
 }
