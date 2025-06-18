@@ -18,10 +18,12 @@ import { DataTable } from './data-table';
 import { useCategory } from './useCategory';
 import { CreateCategoryForm } from '../../_components/create-category-form';
 import { columns } from './columns';
+import { useTransaction } from '../transaction/useTransaction';
 
 
 const TransactionPage: NextPage = () => {
     const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
+    const { refetch: refetchTransaction } = useTransaction();
     const { categories, isLoading, error, refetch } = useCategory();
     
     if (isLoading) return (
@@ -52,7 +54,7 @@ const TransactionPage: NextPage = () => {
 
                 </div>
                 <div className="container mx-auto py-10">
-                    <DataTable columns={columns(refetch)} data={categories} />
+                    <DataTable columns={columns(refetch, refetchTransaction)} data={categories} />
                 </div>
             </div>
         </>

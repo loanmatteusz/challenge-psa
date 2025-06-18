@@ -33,7 +33,7 @@ async function deleteRow(id: string) {
   }
 }
 
-export const columns = (refetch: () => void): ColumnDef<Category>[] => [
+export const columns = (refetch: () => void, refetchTransaction: () => void): ColumnDef<Category>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -79,6 +79,7 @@ export const columns = (refetch: () => void): ColumnDef<Category>[] => [
     cell: ({ row }) => {
       const category = row.original;
       const [open, setOpen] = useState(false);
+      const [updateOpen, setUpdateOpen] = useState(false);
 
       return (
         <DropdownMenu>
@@ -99,7 +100,7 @@ export const columns = (refetch: () => void): ColumnDef<Category>[] => [
 
             <div className="flex flex-col">
               <DropdownMenuItem asChild>
-                <Dialog>
+                <Dialog open={updateOpen} onOpenChange={setUpdateOpen}>
                   <Button variant="ghost" asChild>
                     <DialogTrigger>
                       Update Category
@@ -111,11 +112,17 @@ export const columns = (refetch: () => void): ColumnDef<Category>[] => [
                         Update Category
                       </DialogTitle>
                     </DialogHeader>
-                    <UpdateCategoryForm category={category} onSuccess={() => {
-                      setOpen(false);
-                      refetch();
-                      toast.success("Category updated successfully");
-                    }} />
+                    <UpdateCategoryForm category={category}
+                      onSuccess={() => {
+                        setOpen(false);
+                        refetch();
+                        refetchTransaction();
+                        toast.success("Category updated successfully");
+                      }}
+                      close={() => {
+                        setUpdateOpen(false);
+                      }}
+                    />
                   </DialogContent>
                 </Dialog>
               </DropdownMenuItem>

@@ -23,5 +23,5 @@ export default function CategoryLayout({
         return redirect('/transaction');
     }
 
-    return <main className="w-full min-h-screen">{children}</main>;
+    return <main className="w-full min-h-screen bg-[#CDCDCD] text-black">{children}</main>;
 }

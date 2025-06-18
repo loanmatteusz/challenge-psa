@@ -24,9 +24,10 @@ const formSchema = z.object({
 type UpdateCategoryFormProps = {
     category: Category;
     onSuccess: () => void;
+    close: () => void;
 }
 
-export function UpdateCategoryForm({ category, onSuccess }: UpdateCategoryFormProps) {
+export function UpdateCategoryForm({ category, onSuccess, close }: UpdateCategoryFormProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -45,6 +46,10 @@ export function UpdateCategoryForm({ category, onSuccess }: UpdateCategoryFormPr
         } catch (err: any) {
             console.error("Erro ao criar transação:", err.response?.data || err.message);
         }
+    }
+
+    function handleClose() {
+        close();
     }
 
     return (
@@ -66,7 +71,7 @@ export function UpdateCategoryForm({ category, onSuccess }: UpdateCategoryFormPr
 
                 <div className="flex justify-evenly">
                     <Button type="submit">Update</Button>
-                    <Button type="reset" variant="link">Cancel</Button>
+                    <Button type="button" variant="link" onClick={handleClose}>Cancel</Button>
                 </div>
             </form>
         </Form>
