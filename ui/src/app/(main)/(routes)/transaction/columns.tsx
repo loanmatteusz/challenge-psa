@@ -157,6 +157,7 @@ export const columns = (categories: Category[], refetch: () => void): ColumnDef<
     cell: ({ row }) => {
       const transaction = row.original;
       const [open, setOpen] = useState(false);
+      const [updateOpen, setUpdateOpen] = useState(false);
 
       return (
         <DropdownMenu>
@@ -176,7 +177,7 @@ export const columns = (categories: Category[], refetch: () => void): ColumnDef<
             <DropdownMenuSeparator />
             <div className="flex flex-col">
               <DropdownMenuItem asChild>
-                <Dialog>
+                <Dialog open={updateOpen} onOpenChange={setUpdateOpen}>
                   <Button variant="ghost" asChild>
                     <DialogTrigger>
                       Update Transaction
@@ -188,11 +189,16 @@ export const columns = (categories: Category[], refetch: () => void): ColumnDef<
                         Update Transaction
                       </DialogTitle>
                     </DialogHeader>
-                    <UpdateTransactionForm categories={categories} transaction={transaction} onSuccess={() => {
-                      setOpen(false);
-                      refetch();
-                      toast.success("Transaction updated successfully");
-                    }} />
+                    <UpdateTransactionForm categories={categories} transaction={transaction}
+                      onSuccess={() => {
+                        setUpdateOpen(false);
+                        refetch();
+                        toast.success("Transaction updated successfully");
+                      }}
+                      close={() => {
+                        setUpdateOpen(false);
+                      }}
+                    />
                   </DialogContent>
                 </Dialog>
               </DropdownMenuItem>

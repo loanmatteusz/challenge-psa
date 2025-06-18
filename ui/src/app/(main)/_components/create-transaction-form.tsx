@@ -75,20 +75,20 @@ export function CreateTransactionForm({ refetch, onSuccess, categories }: Create
                     )}
                 />
 
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-4">
 
                     <FormField
                         control={form.control}
                         name="type"
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="w-full">
                                 <FormLabel>Type</FormLabel>
                                 <FormControl>
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
                                     >
-                                        <SelectTrigger className="w-[180px]">
+                                        <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Select a type" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -106,14 +106,14 @@ export function CreateTransactionForm({ refetch, onSuccess, categories }: Create
                         control={form.control}
                         name="categoryId"
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="w-full">
                                 <FormLabel>Category</FormLabel>
                                 <FormControl>
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
                                     >
-                                        <SelectTrigger className="w-[180px]">
+                                        <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Select a type" />
                                         </SelectTrigger>
                                         <SelectContent>

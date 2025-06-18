@@ -32,9 +32,10 @@ type UpdateTransactionFormProps = {
     transaction: Transaction;
     onSuccess: () => void;
     categories: Category[];
+    close: () => void;
 }
 
-export function UpdateTransactionForm({ transaction, onSuccess, categories }: UpdateTransactionFormProps) {
+export function UpdateTransactionForm({ transaction, onSuccess, categories, close }: UpdateTransactionFormProps) {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -59,6 +60,10 @@ export function UpdateTransactionForm({ transaction, onSuccess, categories }: Up
         }
     }
 
+    function handleClose() {
+        close();
+    }
+
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -76,20 +81,20 @@ export function UpdateTransactionForm({ transaction, onSuccess, categories }: Up
                     )}
                 />
 
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap sm:flex-nowrap items-center justify-between gap-4">
 
                     <FormField
                         control={form.control}
                         name="type"
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="w-full">
                                 <FormLabel>Type</FormLabel>
                                 <FormControl>
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
                                     >
-                                        <SelectTrigger className="w-[180px]">
+                                        <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Select a type" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -107,14 +112,14 @@ export function UpdateTransactionForm({ transaction, onSuccess, categories }: Up
                         control={form.control}
                         name="categoryId"
                         render={({ field }) => (
-                            <FormItem>
+                            <FormItem className="w-full">
                                 <FormLabel>Category</FormLabel>
                                 <FormControl>
                                     <Select
                                         onValueChange={field.onChange}
                                         defaultValue={field.value}
                                     >
-                                        <SelectTrigger className="w-[180px]">
+                                        <SelectTrigger className="w-full">
                                             <SelectValue placeholder="Select a type" />
                                         </SelectTrigger>
                                         <SelectContent>
@@ -148,7 +153,7 @@ export function UpdateTransactionForm({ transaction, onSuccess, categories }: Up
 
                 <div className="flex justify-evenly">
                     <Button type="submit">Update</Button>
-                    <Button type="reset" variant="link">Cancel</Button>
+                    <Button type="button" variant="link" onClick={handleClose}>Cancel</Button>
                 </div>
             </form>
         </Form>
