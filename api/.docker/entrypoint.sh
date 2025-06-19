@@ -1,7 +1,6 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
-# Espera o banco estar pronto
 echo "Aguardando o banco de dados ficar disponível..."
 until nc -z database 5432; do
   sleep 1
