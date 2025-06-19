@@ -1,21 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { PrismaService } from '../../../prisma/prisma.service';
+import { PrismaService } from '../prisma/prisma.service';
 
-import { Transaction } from '../../domain/entities/transaction.entity';
+import { TransactionDTO } from './dtos/transaction.dto';
 
-import { ITransactionRepository } from '../../domain/repositories/transaction-repository.interface';
-
-import { GetTransactionsQueryDTO } from '../../presentation/dtos/get-transactions-query.dto';
-import { CreateTransactionDTO } from '../../presentation/dtos/create-transaction.dto';
-import { UpdateTransactionDTO } from '../../presentation/dtos/update-transaction.dto';
+import { GetTransactionsQueryDTO } from './/dtos/get-transactions-query.dto';
+import { CreateTransactionDTO } from './/dtos/create-transaction.dto';
+import { UpdateTransactionDTO } from './/dtos/update-transaction.dto';
 
 @Injectable()
-export class TransactionRepository implements ITransactionRepository {
+export class TransactionRepository {
 
     @Inject(PrismaService)
     private readonly prismaService: PrismaService;
 
-    public async create(data: CreateTransactionDTO, userId: string): Promise<Transaction> {
+    public async create(data: CreateTransactionDTO, userId: string): Promise<TransactionDTO> {
         const transaction = await this.prismaService.transaction.create({
             data: {
                 ...data,
@@ -25,10 +23,10 @@ export class TransactionRepository implements ITransactionRepository {
                 category: true,
             }
         });
-        return Transaction.fromPrisma(transaction);
+        return TransactionDTO.fromPrisma(transaction);
     }
 
-    public async getById(transactionId: string, userId: string): Promise<Transaction> {
+    public async getById(transactionId: string, userId: string): Promise<TransactionDTO> {
         const transaction = await this.prismaService.transaction.findFirst({
             where: {
                 id: transactionId,
@@ -38,20 +36,20 @@ export class TransactionRepository implements ITransactionRepository {
                 category: true,
             }
         });
-        return Transaction.fromPrisma(transaction);
+        return TransactionDTO.fromPrisma(transaction);
     }
 
-    public async getAllOrFilter(payload: GetTransactionsQueryDTO, userId: string): Promise<Transaction[]> {
+    public async getAllOrFilter(payload: GetTransactionsQueryDTO, userId: string): Promise<TransactionDTO[]> {
         const transactions = await this.prismaService.transaction.findMany({
             where: payload.type ? { type: payload.type, userId } : { userId },
             include: {
                 category: true,
             }
         });
-        return Transaction.fromPrismaArray(transactions);
+        return TransactionDTO.fromPrismaArray(transactions);
     }
 
-    public async update(transactionId: string, payload: UpdateTransactionDTO, userId: string): Promise<Transaction> {
+    public async update(transactionId: string, payload: UpdateTransactionDTO, userId: string): Promise<TransactionDTO> {
         const transactionUpdated = await this.prismaService.transaction.update({
             where: {
                 id: transactionId,
@@ -63,10 +61,10 @@ export class TransactionRepository implements ITransactionRepository {
                 category: true,
             }
         });
-        return Transaction.fromPrisma(transactionUpdated);
+        return TransactionDTO.fromPrisma(transactionUpdated);
     }
 
-    public async delete(transactionId: string, userId: string): Promise<Transaction> {
+    public async delete(transactionId: string, userId: string): Promise<TransactionDTO> {
         const transactionDeleted = await this.prismaService.transaction.delete({
             where: {
                 id: transactionId,
@@ -75,6 +73,6 @@ export class TransactionRepository implements ITransactionRepository {
                 category: true,
             }
         });
-        return Transaction.fromPrisma(transactionDeleted);
+        return TransactionDTO.fromPrisma(transactionDeleted);
     }
 }

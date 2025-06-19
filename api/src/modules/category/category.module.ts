@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CategoryController } from './presentation/controllers/category.controller';
-import { CategoryProviders } from './shared/category.provider';
+import { CategoryController } from './category.controller';
+import { CategoryProviders } from './category.provider';
 
 @Module({
   providers: [...CategoryProviders],

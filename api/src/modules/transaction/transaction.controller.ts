@@ -1,17 +1,17 @@
 import { Body, Controller, Delete, Get, Inject, Param, Post, Put, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 
-import { JwtGuard } from '../../../auth/guards/jwt.guard';
-import { CurrentUser } from '../../../auth/decorators/user.decorator';
-import { IUserRequest } from '../../../auth/interfaces/user-request.interface';
+import { JwtGuard } from '..//auth/guards/jwt.guard';
+import { CurrentUser } from '../auth/decorators/user.decorator';
+import { IUserRequest } from '../auth/interfaces/user-request.interface';
 
-import { ITransactionService } from '../../domain/services/transaction-service.interface';
+import { TransactionService } from './transaction.service';
 
-import { Transaction } from '../../domain/entities/transaction.entity';
-import { CreateTransactionDTO } from '../../presentation/dtos/create-transaction.dto';
-import { GetTransactionsQueryDTO } from '../../presentation/dtos/get-transactions-query.dto';
-import { UpdateTransactionDTO } from '../../presentation/dtos/update-transaction.dto';
-import { TransactionProvidersEnum } from '../../shared/enums/transaction-providers.enum';
+import { TransactionDTO } from './dtos/transaction.dto';
+import { CreateTransactionDTO } from './/dtos/create-transaction.dto';
+import { GetTransactionsQueryDTO } from './/dtos/get-transactions-query.dto';
+import { UpdateTransactionDTO } from './/dtos/update-transaction.dto';
+import { TransactionProvidersEnum } from './enums/transaction-providers.enum';
 
 @ApiTags('[TRANSACTION]')
 @ApiBearerAuth()
@@ -19,10 +19,10 @@ import { TransactionProvidersEnum } from '../../shared/enums/transaction-provide
 @Controller('transaction')
 export class TransactionController {
     @Inject(TransactionProvidersEnum.TRANSACTION_SERVICE)
-    private readonly transactionService: ITransactionService;
+    private readonly transactionService: TransactionService;
 
     @ApiOkResponse({
-        type: Transaction,
+        type: TransactionDTO,
         description: 'Transaction created successfully',
     })
     @Post()
@@ -31,7 +31,7 @@ export class TransactionController {
     }
 
     @ApiOkResponse({
-        type: Transaction,
+        type: TransactionDTO,
         description: 'Transactions fetched successfully',
     })
     @Get()
@@ -40,7 +40,7 @@ export class TransactionController {
     }
 
     @ApiOkResponse({
-        type: Transaction,
+        type: TransactionDTO,
         description: 'Transaction fetched successfully',
     })
     @Get(":id")
@@ -49,7 +49,7 @@ export class TransactionController {
     }
 
     @ApiOkResponse({
-        type: Transaction,
+        type: TransactionDTO,
         description: 'Transaction updated successfully',
     })
     @Put(":id")
@@ -62,7 +62,7 @@ export class TransactionController {
     }
 
     @ApiOkResponse({
-        type: Transaction,
+        type: TransactionDTO,
         description: 'Transaction deleted successfully',
     })
     @Delete(":id")

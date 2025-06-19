@@ -1,8 +1,8 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { TransactionType } from '../../shared/enums/transaction-type.enum';
 import { IsEnum } from 'class-validator';
+import { TransactionType } from '../enums/transaction-type.enum';
 
-export class Transaction {
+export class TransactionDTO {
     @ApiProperty({ type: String, description: 'ID' })
     public id: string;
 
@@ -25,8 +25,8 @@ export class Transaction {
     @ApiProperty({ type: String, description: 'Date of transaction' })
     public date: Date;
 
-    static fromPrisma(data: any): Transaction {
-        const dto = new Transaction();
+    static fromPrisma(data: any): TransactionDTO {
+        const dto = new TransactionDTO();
         dto.id = data.id;
         dto.type = data.type as TransactionType;
         dto.amount = Number(data.amount);
@@ -42,7 +42,7 @@ export class Transaction {
         return dto;
     }
 
-    static fromPrismaArray(dataArray: any[]): Transaction[] {
-        return dataArray.map(data => Transaction.fromPrisma(data));
+    static fromPrismaArray(dataArray: any[]): TransactionDTO[] {
+        return dataArray.map(data => TransactionDTO.fromPrisma(data));
     }
 }

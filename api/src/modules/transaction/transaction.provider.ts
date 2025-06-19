@@ -4,10 +4,10 @@ import { Provider } from '@nestjs/common';
 import { TransactionProvidersEnum } from './enums/transaction-providers.enum';
 
 // SERVICES
-import { TransactionService } from '../application/services/transaction.service';
+import { TransactionService } from './transaction.service';
 
 // REPOSITORIES
-import { TransactionRepository } from '../infrastructure/repositories/transaction.repository';
+import { TransactionRepository } from './transaction.repository';
 
 export const TransactionProviders: Provider[] = [
     {
