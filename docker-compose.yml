@@ -7,11 +7,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - API_URL=http://api:8080/api
       - NEXTAUTH_URL=http://localhost:3000
+      - NEXT_PUBLIC_API_URL=http://api:8080/api
       - NEXTAUTH_SECRET=eusouobatman
-    # volumes:
-    #   - ./ui:/app:cached
     depends_on:
       - backend
     networks:
@@ -24,6 +22,7 @@ services:
       dockerfile: Dockerfile
     environment:
       DATABASE_URL: "postgresql://postgres:docker@findev-db:5432/findev-db?schema=public"
+      JWT_SECRET: secredobatman
     ports:
       - "8080:8080"
     volumes:
