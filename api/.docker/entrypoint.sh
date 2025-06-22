@@ -1,8 +1,12 @@
 #!/bin/sh
 set -e
 
-echo "Aguardando o banco de dados ficar disponível..."
-until nc -z database 5432; do
+DB_HOST=$(echo "$DATABASE_URL" | sed -E 's|.*@([^:/]+).*|\1|')
+DB_PORT=$(echo "$DATABASE_URL" | sed -E 's|.*:([0-9]+)/.*|\1|')
+
+echo "Esperando o banco em $DB_HOST:$DB_PORT..."
+
+until nc -z "$DB_HOST" "$DB_PORT"; do
   sleep 1
 done
 
