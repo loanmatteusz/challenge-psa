@@ -1,0 +1,40 @@
+services:
+  backend:
+    container_name: api
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: "postgresql://postgres:docker@findev-db:5432/findev-db?schema=public"
+      JWT_SECRET: secredobatman
+    ports:
+      - "8080:8080"
+    volumes:
+      - .:/home/app:cached
+      - ./package.json:/home/app/package.json:cached
+    depends_on:
+      database:
+        condition: service_healthy
+    networks:
+      - api_network
+
+  database:
+    image: postgres:14.4-alpine
+    container_name: findev-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: docker
+      POSTGRES_DB: findev-db
+    ports:
+      - 5432:5432
+    networks:
+      - api_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+
+networks:
+  api_network:
