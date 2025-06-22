@@ -3,6 +3,7 @@ set -e
 
 DB_HOST=$(echo "$DATABASE_URL" | sed -E 's|.*@([^:/]+).*|\1|')
 DB_PORT=$(echo "$DATABASE_URL" | sed -E 's|.*:([0-9]+)/.*|\1|')
+DB_PORT=${DB_PORT:-5432}
 
 echo "Esperando o banco em $DB_HOST:$DB_PORT..."
 
